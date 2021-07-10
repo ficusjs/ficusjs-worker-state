@@ -1,0 +1,22 @@
+{
+  "name": "ficusjs-worker-state",
+  "version": "0.1.0",
+  "description": "FicusJS worker state",
+  "main": "index.js",
+  "scripts": {
+    "build": "run-s build:files build:worker",
+    "build:worker": "rollup -i src/worker.js -o dist/worker.js -f iife -p \"node-resolve={}\"",
+    "build:files": "mkdir -p dist && cp src/index.html dist && cp src/main.js dist && cp favicon.ico dist",
+    "serve": "http-server -c0 dist"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@ficusjs/state": "^1.1.2",
+    "@rollup/plugin-node-resolve": "^13.0.0",
+    "http-server": "^0.12.3",
+    "npm-run-all": "^4.1.5",
+    "rollup": "^2.53.0",
+    "standard": "^16.0.3"
+  }
+}
