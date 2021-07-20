@@ -1,30 +1,10 @@
-import { createCustomElement } from 'https://cdn.skypack.dev/@ficusjs/core/custom-element'
-import { html, renderer } from 'https://cdn.skypack.dev/@ficusjs/renderers/htm'
-
-function withWorkerAppState (workerUrl, options) {
-  return {
-    ...options,
-    created () {
-      this.worker = new Worker(new URL(workerUrl, import.meta.url))
-      this.worker.onmessage = e => {
-        this.state = e.data
-
-        // clear the getter cache
-        this.computedCache = {}
-
-        // Run the render processor now that there's changes
-        this._processRender()
-      }
-    },
-    dispatch (actionName, payload) {
-      this.worker.postMessage({ actionName, payload })
-    }
-  }
-}
+/* global Worker */
+import { createCustomElement, withWorkerStore } from 'https://cdn.skypack.dev/ficusjs@3'
+import { html, renderer } from 'https://cdn.skypack.dev/@ficusjs/renderers@3/htm'
 
 createCustomElement(
   'hello-world',
-  withWorkerAppState('./worker.js', {
+  withWorkerStore(new Worker('./worker.js'), {
     renderer,
     onButtonClick () {
       this.dispatch('setText', 'This is a test')
